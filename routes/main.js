@@ -39,7 +39,7 @@ module.exports = function(app, forumData) {
     // List Users page
     app.get('/users',function(req,res){
         // Query to select all users
-        let sqlquery = `SELECT   username, firstname, surname
+        let sqlquery = `SELECT   username, firstname, surname, country
                         FROM     users 
                         ORDER BY username;`
                  
