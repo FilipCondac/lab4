@@ -17,10 +17,12 @@ module.exports = function(app, forumData) {
     // View Posts page
     app.get('/viewposts',function(req,res){
         // Query to select all posts from the database
-        let sqlquery = `SELECT   post_id, p.post_date, t.topic_title, p.post_title, p.post_content
+        let sqlquery = `SELECT   post_id, p.post_date, t.topic_title, p.post_title, p.post_content, u.username
                         FROM     posts p
                         JOIN     topics t
-                        ON       t.topic_id=p.topic_id
+                        ON       t.topic_id = p.topic_id
+                        JOIN     users u
+                        ON       u.user_id = p.user_id
                         ORDER BY post_date`;
 
         // Run the query
@@ -159,14 +161,21 @@ module.exports = function(app, forumData) {
         let term = '%' + req.query.keyword + '%'
         let sqlquery = `SELECT *
                         FROM   posts p
-                        WHERE  post_title LIKE ? OR post_content LIKE ?`
+                        JOIN   topics t
+                        ON     t.topic_id=p.topic_id
+                        WHERE  post_title LIKE ? OR post_content LIKE ?
+                        ORDER BY post_date`
 
+
+                        
         db.query(sqlquery, [term, term], (err, result) => {
             if (err) {
                 res.redirect('./');
             }
 
-            res.send('TODO');
+            let data = Object.assign({}, forumData, {posts:result});
+         
+          res.render("viewposts.ejs", data);
         });      
     });
 }
