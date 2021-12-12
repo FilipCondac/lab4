@@ -8,11 +8,15 @@
     <h1><%=forumName%></h1>
     <h2>Topics</h2>
     <table>
-      <tr><th>Topic</th><th>Description</th></tr>
+      <tr><th>Date</th><th>Description</th><th>Topic</th><th>Post Title</th><th>Post Content</th><th>Username</th></tr>
       <% topics.forEach(function(topic) { %>
         <tr>
+          <td><%= topic.post_date.toDateString() %> <%= topic.post_date.getHours() %>:<%= topic.post_date.getMinutes() %></td>
           <td><%= topic.topic_title %></td>
           <td><%= topic.topic_description %></td>
+          <td><%= topic.post_title %></td>
+          <td><%= topic.post_content %></td>
+          <td><%= topic.username %> </td>
         </tr>
       <% }) %>    
     </table>    
